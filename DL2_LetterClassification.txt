@@ -1,0 +1,87 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
+# Load dataset
+dataset = pd.read_csv("C:/Users/Aishwarya/Downloads/2_letter_recognition.data", header=None)
+
+# Split features and labels
+X = dataset.iloc[:, 1:17]
+Y = dataset.iloc[:, 0]
+
+# Train-test split
+X_train, X_test, Y_train, Y_test = train_test_split(
+    X, Y, test_size=0.2, random_state=10
+)
+
+# Scaling
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# Deep Neural Network (MLP)
+mlp = MLPClassifier(
+    hidden_layer_sizes=(250, 300),
+    activation='logistic',
+    max_iter=500
+)
+
+# Train model
+mlp.fit(X_train, Y_train)
+
+# Prediction
+y_pred = mlp.predict(X_test)
+
+# Accuracy
+print("Accuracy:", accuracy_score(Y_test, y_pred))
+
+# Confusion Matrix
+print("\nConfusion Matrix:\n", confusion_matrix(Y_test, y_pred))
+
+# Full report
+print("\nClassification Report:\n", classification_report(Y_test, y_pred))import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
+# Load dataset
+dataset = pd.read_csv("C:/Users/Aishwarya/Downloads/2_letter_recognition.data", header=None)
+
+# Split features and labels
+X = dataset.iloc[:, 1:17]
+Y = dataset.iloc[:, 0]
+
+# Train-test split
+X_train, X_test, Y_train, Y_test = train_test_split(
+    X, Y, test_size=0.2, random_state=10
+)
+
+# Scaling
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# Deep Neural Network (MLP)
+mlp = MLPClassifier(
+    hidden_layer_sizes=(250, 300),
+    activation='logistic',
+    max_iter=500
+)
+
+# Train model
+mlp.fit(X_train, Y_train)
+
+# Prediction
+y_pred = mlp.predict(X_test)
+
+# Accuracy
+print("Accuracy:", accuracy_score(Y_test, y_pred))
+
+# Confusion Matrix
+print("\nConfusion Matrix:\n", confusion_matrix(Y_test, y_pred))
+
+# Full report
+print("\nClassification Report:\n", classification_report(Y_test, y_pred))
