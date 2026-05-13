@@ -1,0 +1,157 @@
+!apt-get update
+!apt-get install -y openmpi-bin openmpi-common libopenmpi-dev
+
+
+%%writefile mpi_kmeans.cpp
+#include <iostream>
+#include <vector>
+#include <cmath>
+#include <cstdlib>
+#include <ctime>
+#include <mpi.h>
+
+using namespace std;
+
+#define POINTS 12
+#define K 2
+#define ITERATIONS 5
+
+struct Point {
+    float x, y;
+};
+
+// Distance Function
+float distance(Point a, Point b) {
+    return sqrt((a.x - b.x) * (a.x - b.x) +
+                (a.y - b.y) * (a.y - b.y));
+}
+
+int main(int argc, char* argv[]) {
+
+    MPI_Init(&argc, &argv);
+
+    int rank, size;
+
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+
+    vector<Point> points;
+    vector<Point> centroids(K);
+
+    int chunk = POINTS / size;
+
+    vector<Point> local_points(chunk);
+
+    // Root Process Generates Dataset
+    if (rank == 0) {
+
+        srand(time(0));
+
+        points.resize(POINTS);
+
+        cout << "Dataset:\n";
+
+        for (int i = 0; i < POINTS; i++) {
+            points[i].x = rand() % 100;
+            points[i].y = rand() % 100;
+
+            cout << "(" << points[i].x << ", " << points[i].y << ")\n";
+        }
+
+        centroids[0] = points[0];
+        centroids[1] = points[1];
+    }
+
+    // Broadcast Centroids
+    MPI_Bcast(centroids.data(),
+              K * sizeof(Point),
+              MPI_BYTE,
+              0,
+              MPI_COMM_WORLD);
+
+    // Scatter Dataset
+    MPI_Scatter(rank == 0 ? points.data() : NULL,
+                chunk * sizeof(Point),
+                MPI_BYTE,
+                local_points.data(),
+                chunk * sizeof(Point),
+                MPI_BYTE,
+                0,
+                MPI_COMM_WORLD);
+
+    double start = MPI_Wtime();
+
+    for (int iter = 0; iter < ITERATIONS; iter++) {
+
+        vector<float> sumX(K, 0);
+        vector<float> sumY(K, 0);
+        vector<int> count(K, 0);
+
+        for (int i = 0; i < chunk; i++) {
+
+            float minDist = distance(local_points[i], centroids[0]);
+            int cluster = 0;
+
+            for (int j = 1; j < K; j++) {
+
+                float dist = distance(local_points[i], centroids[j]);
+
+                if (dist < minDist) {
+                    minDist = dist;
+                    cluster = j;
+                }
+            }
+
+            sumX[cluster] += local_points[i].x;
+            sumY[cluster] += local_points[i].y;
+            count[cluster]++;
+        }
+
+        vector<float> globalSumX(K);
+        vector<float> globalSumY(K);
+        vector<int> globalCount(K);
+
+        MPI_Allreduce(sumX.data(), globalSumX.data(),
+                      K, MPI_FLOAT, MPI_SUM,
+                      MPI_COMM_WORLD);
+
+        MPI_Allreduce(sumY.data(), globalSumY.data(),
+                      K, MPI_FLOAT, MPI_SUM,
+                      MPI_COMM_WORLD);
+
+        MPI_Allreduce(count.data(), globalCount.data(),
+                      K, MPI_INT, MPI_SUM,
+                      MPI_COMM_WORLD);
+
+        for (int j = 0; j < K; j++) {
+            if (globalCount[j] != 0) {
+                centroids[j].x = globalSumX[j] / globalCount[j];
+                centroids[j].y = globalSumY[j] / globalCount[j];
+            }
+        }
+    }
+
+    double end = MPI_Wtime();
+
+    if (rank == 0) {
+
+        cout << "\nFinal Centroids:\n";
+
+        for (int i = 0; i < K; i++) {
+            cout << "Cluster " << i << ": ("
+                 << centroids[i].x << ", "
+                 << centroids[i].y << ")\n";
+        }
+
+        cout << "\nExecution Time: " << (end - start) << " sec\n";
+    }
+
+    MPI_Finalize();
+    return 0;
+}
+     
+
+!mpic++ mpi_kmeans.cpp -o mpi_kmeans
+
+
+!mpirun --allow-run-as-root -np 1 ./mpi_kmeans
