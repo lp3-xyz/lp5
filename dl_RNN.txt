@@ -1,0 +1,87 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from sklearn.preprocessing import MinMaxScaler
+from keras.models import Sequential
+from keras.layers import LSTM, Dense, Dropout
+
+# ---------------- LOAD DATA ----------------
+data = pd.read_csv(r"C:\Users\Aishwarya\Downloads\Google_Stock_Price_Train.csv")
+
+data["Close"] = pd.to_numeric(data["Close"], errors='coerce')
+data = data.dropna()
+
+dataset = data[['Close']].values
+
+# ---------------- SCALE DATA ----------------
+sc = MinMaxScaler(feature_range=(0, 1))
+scaled_data = sc.fit_transform(dataset)
+
+# ---------------- TRAIN-TEST SPLIT ----------------
+train_size = int(len(scaled_data) * 0.8)
+train_data = scaled_data[:train_size]
+test_data = scaled_data[train_size - 60:]   # include last 60 for sequence
+
+# ---------------- CREATE TRAIN SET ----------------
+X_train = []
+y_train = []
+
+for i in range(60, len(train_data)):
+    X_train.append(train_data[i-60:i, 0])
+    y_train.append(train_data[i, 0])
+
+X_train, y_train = np.array(X_train), np.array(y_train)
+X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
+
+# ---------------- MODEL ----------------
+model = Sequential()
+
+model.add(LSTM(100, return_sequences=True, input_shape=(60, 1)))
+model.add(Dropout(0.2))
+
+model.add(LSTM(100, return_sequences=True))
+model.add(Dropout(0.2))
+
+model.add(LSTM(100, return_sequences=True))
+model.add(Dropout(0.2))
+
+model.add(LSTM(100))
+model.add(Dropout(0.2))
+
+model.add(Dense(1))
+
+model.compile(optimizer='adam', loss='mean_squared_error')
+
+# ---------------- TRAIN ----------------
+model.fit(X_train, y_train, epochs=20, batch_size=32)
+
+# ---------------- CREATE TEST SET ----------------
+X_test = []
+y_test = []
+
+for i in range(60, len(test_data)):
+    X_test.append(test_data[i-60:i, 0])
+    y_test.append(test_data[i, 0])
+
+X_test = np.array(X_test)
+y_test = np.array(y_test)
+
+X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1))
+
+# ---------------- PREDICT ----------------
+predicted = model.predict(X_test)
+
+# ---------------- INVERSE TRANSFORM (IMPORTANT FIX) ----------------
+predicted = sc.inverse_transform(predicted)
+real_price = sc.inverse_transform(y_test.reshape(-1, 1))
+
+# ---------------- PLOT ----------------
+plt.plot(real_price, color='red', label='Actual Price')
+plt.plot(predicted, color='green', label='Predicted Price')
+
+plt.title("Stock Price Prediction (RNN - LSTM)")
+plt.xlabel("Time")
+plt.ylabel("Price")
+plt.legend()
+plt.show()
