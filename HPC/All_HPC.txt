@@ -1,0 +1,383 @@
+) Parallel Breadth First Search (BFS)
+What is BFS?
+
+Breadth First Search (BFS) is a graph traversal algorithm used to visit nodes level by level. It starts from a source node and first visits all neighboring nodes before moving to the next level. BFS uses a Queue (FIFO) data structure.
+
+Working:
+Start with source node.
+Mark node as visited.
+Push source into queue.
+Remove node from queue.
+Visit all adjacent nodes.
+Push unvisited nodes into queue.
+Repeat until queue becomes empty.
+
+Example:
+
+Graph:
+
+A
+|\
+B C
+| |
+D E
+
+Traversal:
+
+A → B → C → D → E
+Parallel BFS
+
+In Parallel BFS, multiple processors/threads explore nodes simultaneously. OpenMP divides work among threads. Each thread processes nodes from the same level independently.
+
+OpenMP Directive:
+#pragma omp parallel for
+Advantages
+Faster traversal
+Better CPU utilization
+Useful for large graphs
+Reduces execution time
+Applications
+Social network analysis
+Shortest path algorithms
+Web crawling
+GPS navigation
+Time Complexity
+
+Sequential:
+
+O(V+E)
+
+Parallel:
+
+Approximately:
+
+O((V+E)/P)
+
+where:
+
+P = processors
+
+2) Parallel Depth First Search (DFS)
+What is DFS?
+
+DFS explores a graph deeply before backtracking. It uses a Stack data structure or recursion.
+
+Working:
+Start from source node.
+Visit node.
+Move to adjacent node.
+Continue until no node remains.
+Backtrack.
+
+Example:
+
+Graph:
+
+A
+|\
+B C
+|
+D
+|
+E
+
+Traversal:
+
+A → B → D → E → C
+Parallel DFS
+
+Graph is divided into subgraphs.
+
+Multiple processors explore different branches simultaneously.
+
+OpenMP:
+
+#pragma omp parallel for
+
+Advantages:
+
+Faster for large graphs
+Better workload distribution
+Improved performance
+
+Applications:
+
+Maze solving
+Cycle detection
+AI search
+Network analysis
+
+Complexity:
+
+Sequential:
+
+O(V+E)
+
+Parallel:
+
+O((V+E)/P)
+3) Parallel Bubble Sort
+What is Bubble Sort?
+
+Bubble Sort repeatedly compares adjacent elements and swaps them if they are in the wrong order. Largest element gradually moves to the end.
+
+Example:
+
+Array:
+
+5 3 4 1 2
+
+Pass 1:
+
+3 4 1 2 5
+
+Pass 2:
+
+3 1 2 4 5
+
+Pass 3:
+
+1 2 3 4 5
+Parallel Bubble Sort
+
+Array divided into multiple parts.
+
+Multiple threads simultaneously compare and swap elements.
+
+OpenMP:
+
+#pragma omp parallel for
+
+Advantages:
+
+Faster than sequential for large datasets
+Uses multiple CPU cores
+
+Disadvantages:
+
+Synchronization overhead
+Less efficient than merge sort
+
+Time Complexity:
+
+Sequential:
+
+O(n²)
+
+Parallel:
+
+Approximately:
+
+O(n²/P)
+4) Parallel Merge Sort
+What is Merge Sort?
+
+Merge Sort uses Divide and Conquer.
+
+Steps:
+
+Divide array
+Sort subarrays
+Merge sorted arrays
+
+Example:
+
+38 27 43 3 9 82 10
+
+Split:
+
+38 27 43
+3 9 82 10
+
+Split further:
+
+38
+27
+43
+3
+9
+82
+10
+
+Merge:
+
+3 9 10 27 38 43 82
+Parallel Merge Sort
+
+Two halves are sorted simultaneously using threads.
+
+OpenMP:
+
+#pragma omp parallel sections
+#pragma omp section
+
+Advantages:
+
+Faster for large data
+Efficient use of multicore CPUs
+Better scalability
+
+Complexity:
+
+Sequential:
+
+O(nlogn)
+
+Parallel:
+
+O((nlogn)/P)
+5) CUDA Vector Addition
+What is CUDA?
+
+CUDA (Compute Unified Device Architecture) is a parallel computing platform developed by NVIDIA
+
+CUDA allows execution of code on GPU.
+
+Vector Addition
+
+Given:
+
+A=[1,2,3]
+
+B=[4,5,6]
+
+Output:
+
+C=[5,7,9]
+
+Formula:
+
+C[i]=A[i]+B[i]
+
+GPU launches multiple threads.
+
+Each thread computes one element.
+
+Kernel:
+
+__global__
+void vectorAdd(int *A,int *B,int *C)
+{
+int i=threadIdx.x;
+
+C[i]=A[i]+B[i];
+}
+
+Execution:
+
+CPU:
+
+Copy data CPU→GPU
+Launch kernel
+Copy GPU→CPU
+
+Advantages:
+
+Very fast for large vectors
+Thousands of GPU threads execute simultaneously
+
+Applications:
+
+Image processing
+AI
+Scientific computing
+
+Time Complexity:
+
+O(n)
+6) CUDA Matrix Multiplication
+
+Matrix multiplication:
+
+If
+
+A = m×n
+
+B = n×p
+
+Result:
+
+C = m×p
+
+Element formula:
+
+C
+ij
+	​
+
+=∑
+k=1
+n
+	​
+
+A
+ik
+	​
+
+B
+kj
+	​
+
+
+Example:
+
+Matrix A:
+
+1 2
+3 4
+
+Matrix B:
+
+5 6
+7 8
+
+Result:
+
+19 22
+43 50
+
+Calculation:
+
+(1×5)+(2×7)=19
+(1×6)+(2×8)=22
+CUDA Matrix Multiplication Working
+
+Each GPU thread computes one matrix element.
+
+Kernel:
+
+__global__
+void multiply(int *A,int *B,int *C)
+{
+int row=threadIdx.y;
+int col=threadIdx.x;
+
+for(int k=0;k<n;k++)
+C[row][col]+=A[row][k]*B[k][col];
+}
+
+Advantages:
+
+Massive parallelism
+High throughput
+Faster than CPU
+
+Applications:
+
+Deep learning
+Computer graphics
+Scientific simulation
+
+Complexity:
+
+Sequential:
+
+O(n³)
+
+Parallel:
+
+Approximately:
+
+O(n³/P)
+
+This is journal + viva-ready detailed theory from your LP manual topics.

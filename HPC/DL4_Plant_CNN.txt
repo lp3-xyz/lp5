@@ -1,0 +1,47 @@
+Deep Learning is a subset of Machine Learning that uses neural networks with multiple layers to automatically learn patterns from data.
+It is widely used in:
+Image classification
+Object detection
+Speech recognition
+Medical diagnosis
+
+CNN is a deep learning architecture designed for image processing.
+It consists of:
+🔹 (a) Convolution Layer
+Extracts important features from images
+Detects edges, patterns, and textures
+🔹 (b) Activation Function (ReLU)
+Introduces non-linearity
+Helps model learn complex patterns
+🔹 (c) Pooling Layer
+Reduces image size
+Keeps only important features
+Improves computational efficiency
+🔹 (d) Flatten Layer
+Converts 2D feature maps into 1D vector
+🔹 (e) Fully Connected Layer (Dense Layer)
+Performs classification based on extracted features
+🔹 (f) Dropout Layer
+Prevents overfitting
+Randomly disables neurons during training
+🔹 (g) Output Layer
+Uses Softmax activation
+Produces probability for each class
+
+ReLU (Rectified Linear Unit)
+f(x)=max(0,x)
+If input > 0 → return input
+If input < 0 → return 0
+Fast computation
+Reduces vanishing gradient problem
+Works well in CNN
+
+Softmax Activation (OUTPUT LAYER)
+Softmax is used in multi-class classification
+Converts outputs into probabilities
+Softmax(xi​)=∑exj​exi​​
+Converts numbers into probabilities
+Sum of all outputs = 1
+
+sparse_categorical_crossentropy
+👉 Measures error between predicted and actual output

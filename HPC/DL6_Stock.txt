@@ -1,0 +1,197 @@
+. What is Time Series Data?
+
+Time series data is data that depends on time order.
+
+Example:
+
+Stock prices
+Weather data
+Sales data
+Key property:
+
+Future value depends on past values
+
+🧠 4. Why Normal ML is not enough?
+
+Traditional ML models assume:
+
+data is independent
+
+But stock data:
+
+depends on previous days
+
+So we use:
+
+🔥 Recurrent Neural Networks (RNN)
+
+🔁 5. What is RNN?
+
+RNN is a neural network that has memory.
+
+It remembers previous inputs and uses them for prediction.
+
+🧠 6. What is LSTM?
+
+LSTM = Long Short-Term Memory Network
+
+It is an improved RNN that solves:
+
+vanishing gradient problem
+long-term dependency issue
+LSTM can:
+
+✔ remember important past information
+✔ forget irrelevant data
+
+🔄 7. Why 60-day window?
+
+The model uses last 60 days data to predict next day price.
+
+This is called:
+
+Sliding Window Technique
+
+Example:
+Input (X)	Output (Y)
+Day 1–60	Day 61
+Day 2–61	Day 62
+📏 8. Data Normalization
+Method used:
+
+MinMaxScaler
+
+X
+′
+=
+max−min
+X−min
+	​
+
+Why normalization?
+LSTM works better on small values
+speeds up training
+improves stability
+🧠 9. Data Reshaping for LSTM
+
+LSTM expects 3D input:
+
+(samples,timesteps,features)
+
+So input becomes:
+
+samples → number of sequences
+timesteps → 60 days
+features → 1 (closing price)
+🧠 10. LSTM Model Architecture
+
+The model contains multiple stacked LSTM layers:
+
+Structure:
+LSTM Layer (100 units)
+Dropout (20%)
+LSTM Layer
+Dropout
+LSTM Layer
+Dropout
+LSTM Layer
+Dropout
+Dense Output Layer
+🔷 11. LSTM Layer Working
+
+Each LSTM cell has 3 gates:
+
+🔹 Forget Gate
+
+Decides what information to remove
+
+🔹 Input Gate
+
+Decides what new information to store
+
+🔹 Output Gate
+
+Produces final output
+
+⚡ 12. Activation in LSTM
+
+LSTM uses internal activation functions like:
+
+sigmoid
+tanh
+
+These help control memory flow.
+
+🎯 13. Dropout Layer
+
+Dropout randomly disables neurons during training.
+
+Purpose:
+prevents overfitting
+improves generalization
+⚙️ 14. Loss Function
+Mean Squared Error (MSE)
+MSE=
+n
+1
+	​
+
+∑(y−
+y
+^
+	​
+
+)
+2
+Why MSE?
+used for regression problems
+measures difference between actual and predicted values
+⚡ 15. Optimizer
+Adam Optimizer
+adaptive learning rate method
+combines momentum + RMSprop
+fast and efficient training
+🧪 16. Training Process
+
+The model learns from:
+
+past 60 days stock prices
+to predict next day price
+Epochs:
+number of times model sees full dataset
+📊 17. Prediction Process
+
+After training:
+
+model predicts scaled stock prices
+predictions are still in normalized form
+🔄 18. Inverse Transformation
+
+Since data was normalized, we convert back:
+
+Original=Scaler
+−1
+(Predicted)
+Purpose:
+convert predictions into real stock prices
+📈 19. Visualization
+Graph shows:
+🔴 Actual stock price
+🟢 Predicted stock price
+Interpretation:
+close lines → good model
+gap → error in prediction
+🧠 20. Why LSTM is used here?
+Feature	LSTM Advantage
+Time dependency	remembers past data
+Sequence data	handles sequences well
+Non-linear trends	captures complex patterns
+⚠️ 21. Limitations
+stock market is highly unpredictable
+external factors (news, politics) not included
+model predicts trends, not exact values
+🚀 22. Applications
+stock market prediction
+weather forecasting
+sales forecasting
+energy demand prediction

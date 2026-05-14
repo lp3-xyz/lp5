@@ -1,0 +1,195 @@
+Image Representation
+
+Each image is represented as a matrix:
+
+28×28=784pixels
+
+Each pixel has intensity value:
+
+0 → black
+255 → white
+⚡ 5. Data Preprocessing
+🔹 Normalization
+
+Pixel values are scaled from:
+
+0−255→0−1
+Formula:
+x=
+255
+x
+	​
+
+Why normalization?
+Improves training speed
+Stabilizes gradient descent
+Prevents large value imbalance
+🔹 Reshaping for CNN
+
+CNN expects 4D input:
+
+(samples,height,width,channels)
+
+So images are reshaped to:
+
+(60000, 28, 28, 1)
+
+Where:
+
+1 = grayscale channel
+🧠 6. Convolutional Neural Network (CNN)
+
+CNN is a deep learning model used for image processing and feature extraction.
+
+🔷 7. CNN Architecture Used
+Model structure:
+Conv2D Layer
+MaxPooling Layer
+Conv2D Layer
+MaxPooling Layer
+Flatten Layer
+Dense Layer
+Output Layer
+🧩 8. Convolution Layer (Conv2D)
+Function:
+
+Extracts features like:
+
+edges
+shapes
+textures
+Working:
+
+It applies a filter (kernel) over image:
+
+Feature=Image∗Filter
+Parameters used:
+Filters = 32 / 64
+Kernel size = 3×3
+Activation = ReLU
+⚡ 9. Activation Function (ReLU)
+f(x)=max(0,x)
+Advantages:
+Removes negative values
+Improves learning speed
+Introduces non-linearity
+🧱 10. Max Pooling Layer
+Function:
+
+Reduces image size while preserving important features.
+
+Example:
+
+2×2 pooling → reduces image size by half
+Benefits:
+Reduces computation
+Prevents overfitting
+Keeps important features
+🔄 11. Flatten Layer
+
+Converts:
+
+2Dfeaturemap→1Dvector
+
+Example:
+
+(7,7,64) → 3136 neurons
+🧠 12. Fully Connected Layer (Dense Layer)
+Function:
+Combines extracted features
+Learns final classification patterns
+🎯 13. Output Layer
+Dense(10, activation='softmax')
+Softmax function:
+P(i)=
+∑e
+z
+j
+	​
+
+e
+z
+i
+	​
+
+	​
+
+Output:
+Probability for each class
+Sum = 1
+⚙️ 14. Loss Function
+Sparse Categorical Crossentropy
+
+Used for multi-class classification where labels are integers.
+
+Formula idea:
+Loss=−log(P(correct class))
+⚡ 15. Optimizer
+Adam Optimizer
+Adaptive learning algorithm
+Combines momentum + RMSprop
+Fast convergence
+Reduces loss efficiently
+📊 16. Model Training
+Parameters:
+Epochs = number of full dataset passes
+Validation data = testing during training
+Purpose:
+
+Model learns patterns between:
+
+image pixels
+clothing categories
+📈 17. Evaluation Metrics
+🔹 Accuracy
+Accuracy=
+Total
+Correct
+	​
+
+
+Measures overall correctness.
+
+🧠 18. Prediction Process
+
+Model outputs probability array:
+
+Example:
+
+[0.01, 0.02, 0.80, 0.05, ...]
+Final prediction:
+Highest probability → predicted class
+Using:
+np.argmax()
+📊 19. Visualization
+Image plot:
+
+Shows:
+
+actual image
+predicted label
+true label
+Probability bar chart:
+
+Shows confidence of model for each class.
+
+⚠️ 20. Overfitting Concept
+
+Occurs when:
+
+model performs well on training data
+but poorly on test data
+
+Pooling and CNN structure help reduce overfitting.
+
+🧠 21. Why CNN instead of ANN?
+ANN	CNN
+Works on flat data	Works on images
+No spatial understanding	Captures spatial features
+Low accuracy for images	High accuracy
+🚀 22. Applications
+Image recognition
+Medical imaging
+Object detection
+Self-driving cars
+Fashion recommendation systems

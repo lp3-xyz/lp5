@@ -1,0 +1,68 @@
+✔ Supervised Learning
+
+Because:
+Input (X) → features of letters
+Output (Y) → actual letter (A–Z)
+Model learns mapping:
+X (features) → Y (letter)
+| Column      | Type        | Meaning              |
+| ----------- | ----------- | -------------------- |
+| Column 0    | Categorical | Letter (A–Z)         |
+| Column 1–16 | Numeric     | Shape-based features |
+They represent:
+
+pixel distribution
+edge structure
+symmetry
+density
+curvature
+
+efore training the model, the dataset is preprocessed:
+
+Feature Selection:
+Input features (X) = columns 1 to 16
+Output label (Y) = column 0
+Train-Test Split:
+Data is divided into training (80%) and testing (20%) sets
+Training data is used to build the model
+Testing data is used to evaluate performance
+Feature Scaling:
+StandardScaler is used to normalize the data
+It converts features to a standard range with mean = 0 and standard deviation = 1
+This improves neural network performance and training spee
+
+A Multilayer Perceptron (MLP) is a type of Artificial Neural Network consisting of:
+Input layer (16 neurons for features)
+Hidden layers (250 and 300 neurons)
+Output layer (26 neurons for letters A–Z)
+The hidden layers help in learning complex patterns in the data.
+
+⚙️ Activation Function:
+The model uses the logistic (sigmoid) activation function, defined as:
+σ(x)=/+e^-x
+It converts input values into probabilities between 0 and 1, helping the network make classification decisions.
+
+The model is trained using the training dataset. During training:
+Input features are passed through the network
+Output is predicted
+Error is calculated by comparing predicted and actual values
+Weights are adjusted to minimize error
+This process is repeated for multiple iterations (epochs) until the model learns the patterns properly.
+
+Accuracy Score
+Measures the percentage of correct predictions
+Accuracy tells how many predictions are correct overall.(tp+tn/al)
+Confusion Matrix
+Shows correct and incorrect predictions for each class
+A confusion matrix is a table that shows how well a classification model is performing.
+It compares:
+✔ Actual values vs Predicted values
+Classification Report
+Includes precision, recall, and F1-score for each letter
+|            | Predicted YES | Predicted NO |
+| ---------- | ------------- | ------------ |
+| Actual YES | TP            | FN           |
+| Actual NO  | FP            | TN           |
+precision : Out of all predicted positives, how many were actually correct?(yp/tp+fp)
+recall = Out of all actual positives, how many did we correctly find? (tp/tp+fn)
+

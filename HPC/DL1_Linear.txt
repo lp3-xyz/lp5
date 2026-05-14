@@ -1,0 +1,98 @@
+1. What is Regression?
+Regression = predicting a continuous value
+Example:
+House price
+Salary
+Temperature
+
+California Housing Dataset
+Features:
+Median income
+House age
+Rooms
+Population
+Target:
+House price (in $100,000 units)
+
+3. Linear Regression Theory
+Equation:
+y=w1x1+w2x2+...+b
+Idea:
+Find a straight line that best fits data.
+
+Advantages:
+Simple
+Fast
+Interpretable
+Disadvantages:
+Cannot capture complex patterns
+Assumes linear relationship
+
+4. Deep Learning Regression
+Neural Network idea:
+Instead of straight line → learns complex patterns
+Structure:
+Input → Hidden layers → Output
+Each neuron does: y=activation(wX+b)
+Why multiple layers?
+First layer → simple patterns
+Middle layers → complex patterns
+Last layer → final prediction
+
+5. Activation Function (ReLU)
+f(x)=max(0,x)
+Why used?
+Removes negative values
+Helps network learn non-linear patterns
+
+6. Loss Function (MSE)
+MSE=
+n
+1
+	​
+
+∑(y−
+y
+^
+	​
+
+)
+2
+Meaning:
+Measures error between actual and predicted values
+🎯 7. Optimizer (Adam)
+
+Adam = Adaptive Moment Estimation
+
+Role:
+Updates weights
+Reduces loss efficiently
+Works better than basic gradient descent
+📏 8. RMSE (Root Mean Squared Error)
+RMSE=
+MSE
+	​
+
+Why RMSE?
+Easier interpretation than MSE
+Same unit as target (price)
+📊 9. Training vs Validation Loss
+Training Loss:
+
+Error on training data
+
+Validation Loss:
+
+Error on unseen data
+
+If gap is large:
+
+→ Overfitting
+
+🧠 10. Linear Regression vs Deep Learning
+Feature	Linear Regression	Neural Network
+Complexity	Simple	Complex
+Pattern learning	Linear only	Non-linear
+Accuracy	Medium	High (usually)
+Speed	Very fast	Slower
+Best for	Small datasets	Large datasets

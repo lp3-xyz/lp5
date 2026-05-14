@@ -1,0 +1,148 @@
+3. Data Representation (Vectorization)
+
+Neural networks cannot directly process text, so reviews are converted into numerical format.
+
+Method used:
+
+Bag of Words (Multi-hot Encoding)
+
+Each review is converted into a vector of size 10,000:
+
+1 → word is present
+0 → word is absent
+
+Example:
+
+[0, 1, 0, 0, 1, 0, ...]
+
+This is called vectorization of text data.
+
+🧠 4. Neural Network Model
+
+A Fully Connected Feedforward Neural Network (ANN) is used.
+
+Architecture:
+Input Layer → 10,000 features
+Hidden Layer 1 → 16 neurons (ReLU activation)
+Hidden Layer 2 → 16 neurons (ReLU activation)
+Output Layer → 1 neuron (Sigmoid activation)
+⚡ 5. Activation Functions
+🔹 ReLU (Rectified Linear Unit)
+f(x)=max(0,x)
+
+Used in hidden layers to:
+
+Remove negative values
+Improve learning speed
+🔹 Sigmoid Function
+σ(x)=
+1+e
+−x
+1
+	​
+
+
+Used in output layer to:
+
+Convert output into probability
+Range: 0 to 1
+📉 6. Loss Function
+Binary Crossentropy Loss
+
+Used for binary classification problems.
+
+Formula:
+
+Loss=−[ylog(p)+(1−y)log(1−p)]
+
+Where:
+
+y = actual label
+p = predicted probability
+⚙️ 7. Optimizer
+RMSprop Optimizer
+Used to adjust weights during training
+Automatically adjusts learning rate
+Efficient for neural networks
+📏 8. Training and Validation Split
+
+The training data is split into:
+
+Training set (used to train model)
+Validation set (used to tune model performance)
+
+Example:
+
+10,000 samples used for validation
+🧪 9. Model Training
+
+The model is trained using:
+
+Epochs = number of complete passes over dataset
+Batch size = number of samples processed at once
+
+During training, the model learns patterns between:
+
+Word presence in reviews
+Sentiment (positive/negative)
+📊 10. Evaluation Metrics
+🔹 Accuracy
+Accuracy=
+TotalPredictions
+CorrectPredictions
+	​
+
+
+Measures overall correctness of model.
+
+🔹 Confusion Matrix
+
+A table used to evaluate classification performance:
+
+	Predicted Positive	Predicted Negative
+Actual Positive	TP	FN
+Actual Negative	FP	TN
+
+Where:
+
+TP = True Positive
+TN = True Negative
+FP = False Positive
+FN = False Negative
+📈 11. Loss and Accuracy Graphs
+Loss Graph:
+
+Shows how error decreases during training.
+
+Training loss → model learning on training data
+Validation loss → performance on unseen data
+Accuracy Graph:
+
+Shows improvement in prediction accuracy over epochs.
+
+⚠️ 12. Overfitting Concept
+
+Overfitting occurs when:
+
+Training accuracy increases
+Validation accuracy decreases
+
+This means model memorizes data instead of learning patterns.
+
+🎯 13. Prediction Process
+
+The trained model outputs probabilities:
+
+Close to 1 → Positive review
+Close to 0 → Negative review
+
+A threshold of 0.5 is used:
+
+0.5 → Positive
+
+≤ 0.5 → Negative
+🧠 14. Applications
+Movie review analysis
+Product review classification
+Social media sentiment analysis
+Customer feedback analysis

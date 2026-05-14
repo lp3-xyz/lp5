@@ -1,0 +1,102 @@
+1. What is K-Means Clustering?
+
+K-Means is an unsupervised machine learning algorithm used to group similar data points into clusters.
+👉 Idea:
+We divide data into K clusters
+Each cluster has a center called centroid
+Points are assigned to the nearest centroid
+Centroids are updated repeatedly
+
+Choose number of clusters (K)
+Initialize centroids randomly
+Assign each point to nearest centroid
+Recalculate centroid using mean of points
+Repeat steps 3–4 until convergence
+
+📏 Mathematical Formula:
+
+Centroid is calculated as:
+
+Centroid=(summation od x/n , sum y / n)
+Where:
+
+Σx = sum of all x-coordinates
+Σy = sum of all y-coordinates
+n = number of points in cluster
+
+2. What is MPI?
+
+MPI (Message Passing Interface) is a parallel programming model used to execute tasks on multiple processors.
+👉 Why MPI?
+Faster computation
+Divides workload among multiple processes
+Used in HPC (High Performance Computing)
+
+Key MPI Concepts:
+🔹 Rank:
+Unique ID of each process
+Example: 0, 1, 2, 3...
+👉 It tells “which process I am”
+🔹 Size:
+Total number of processes
+👉 It tells “how many processes are running”
+3. MPI Communication Functions Used
+🔹 MPI_Init
+Starts MPI environment.
+🔹 MPI_Comm_rank
+Gives rank (ID) of process.
+🔹 MPI_Comm_size
+Gives total number of processes.
+🔹 MPI_Bcast (Broadcast)
+Sends same data from one process to all others.
+👉 Used to share centroids
+🔹 MPI_Scatter
+Splits data from root process into chunks and distributes to all processes.
+👉 Used to distribute dataset
+🔹 MPI_Allreduce
+Combines data from all processes and sends result back to all.
+👉 Used to calculate global sums of clusters
+🔹 MPI_Finalize
+Ends MPI environment.
+
+1. MPI Initialization
+
+All processes are started and assigned:
+
+rank → process ID
+size → total number of processes
+2. Dataset Generation (rank 0 only)
+Process 0 generates 12 random points
+Initializes initial centroids
+3. Broadcast
+Centroids are shared with all processes using MPI_Bcast
+4. Scatter
+Dataset is divided equally among processes using MPI_Scatter
+Each process gets a small part of data (local_points)
+5. Local Computation
+
+Each process:
+
+Finds nearest centroid for each point
+Assigns points to clusters
+Computes:
+sum of x values
+sum of y values
+count of points
+6. Global Reduction
+
+Using MPI_Allreduce:
+
+All local results are combined
+Global sums and counts are calculated
+7. Centroid Update
+
+New centroids are calculated as:
+
+Centroid=(8. Iteration
+Steps 5–7 repeat for 5 iterations
+Centroids improve after each iteration
+9. Final Output
+Rank 0 prints final centroids
+Execution time is displayed using MPI_Wtime()
+
